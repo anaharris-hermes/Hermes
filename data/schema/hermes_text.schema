@@ -1,0 +1,47 @@
+﻿PRAGMA foreign_keys = ON;
+
+CREATE TABLE Dialogue (
+    DialogueId   INTEGER PRIMARY KEY AUTOINCREMENT,
+    Title        TEXT NOT NULL,
+    CtsUrn       TEXT,
+    Description  TEXT
+);
+
+CREATE TABLE Chunk (
+    ChunkId        INTEGER PRIMARY KEY AUTOINCREMENT,
+    DialogueId     INTEGER NOT NULL,
+    Sequence       INTEGER NOT NULL,
+    MilestoneRef   TEXT,
+    CanonicalRef   TEXT,
+    GreekText      TEXT NOT NULL,
+    FOREIGN KEY (DialogueId) REFERENCES Dialogue(DialogueId)
+);
+
+CREATE TABLE Token (
+    TokenId     INTEGER PRIMARY KEY AUTOINCREMENT,
+    ChunkId     INTEGER NOT NULL,
+    Position    INTEGER NOT NULL,
+    SurfaceForm TEXT NOT NULL,
+    FOREIGN KEY (ChunkId) REFERENCES Chunk(ChunkId)
+);
+
+CREATE TABLE Lemma (
+    LemmaId     INTEGER PRIMARY KEY AUTOINCREMENT,
+    LemmaText   TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE TokenLemma (
+    TokenId INTEGER NOT NULL,
+    LemmaId INTEGER NOT NULL,
+    PRIMARY KEY (TokenId, LemmaId),
+    FOREIGN KEY (TokenId) REFERENCES Token(TokenId),
+    FOREIGN KEY (LemmaId) REFERENCES Lemma(LemmaId)
+);
+
+CREATE TABLE LemmaMetadata (
+    LemmaVersion TEXT NOT NULL,
+    BuiltAt      TEXT NOT NULL,
+    LemmaCount   INTEGER NOT NULL,
+    Signature    TEXT NOT NULL,
+    Notes        TEXT
+);
