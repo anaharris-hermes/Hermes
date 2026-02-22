@@ -1,0 +1,13 @@
+# .NET build artifacts
+**/bin/
+**/obj/
+
+# Python caches
+**/__pycache__/
+*.py[cod]
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
